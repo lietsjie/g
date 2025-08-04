@@ -1,4 +1,4 @@
-// 🌴 The Beach Theme — Full Aesthetic Edition
+// 🌴 The Beach Theme — Aesthetic Edition
 (function () {
   const currentTheme = localStorage.getItem("theme") || "original";
 
@@ -55,24 +55,21 @@
       const btn = document.createElement("button");
       btn.innerText = opt.name;
       btn.style.cssText = `
-        background: linear-gradient(135deg, #004d4d, #001a1a);
-        border: none;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.2);
         color: #e0ffff;
         font-size: 15px;
         padding: 8px 14px;
         border-radius: 10px;
         cursor: pointer;
         font-family: 'Poppins', sans-serif;
-        box-shadow: 0 0 10px rgba(0,255,255,0.2);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        transition: all 0.2s ease;
       `;
       btn.addEventListener("mouseenter", () => {
-        btn.style.transform = "scale(1.05)";
-        btn.style.boxShadow = "0 0 16px rgba(0,255,255,0.4)";
+        btn.style.background = "rgba(255,255,255,0.15)";
       });
       btn.addEventListener("mouseleave", () => {
-        btn.style.transform = "scale(1)";
-        btn.style.boxShadow = "0 0 10px rgba(0,255,255,0.2)";
+        btn.style.background = "rgba(255,255,255,0.05)";
       });
       btn.addEventListener("click", () => {
         localStorage.setItem("theme", opt.value);
@@ -124,61 +121,14 @@
         rightText.style.fontWeight = "500";
         rightText.style.textShadow = "0 0 6px rgba(0,255,255,0.3)";
       }
+    }
+  }
 
-      // 🎵 Update Music Button
-      const musicButton = document.querySelector("button:contains('🎵 Music')");
-      if (musicButton) {
-        musicButton.style.background = "linear-gradient(135deg, #004d4d, #006666)";
-        musicButton.style.color = "#e0ffff";
-        musicButton.style.boxShadow = "0 0 12px rgba(0,255,255,0.3)";
-        musicButton.onmouseenter = () => {
-          musicButton.style.transform = "scale(1.05)";
-          musicButton.style.boxShadow = "0 0 18px rgba(0,255,255,0.5)";
-        };
-        musicButton.onmouseleave = () => {
-          musicButton.style.transform = "scale(1)";
-          musicButton.style.boxShadow = "0 0 12px rgba(0,255,255,0.3)";
-        };
-      }
-
-      // 💬 Leo Box
-      const leoBox = document.querySelector("div:contains('Leo')");
-      if (leoBox) {
-        leoBox.style.background = "rgba(0, 40, 40, 0.7)";
-        leoBox.style.color = "#e0ffff";
-        leoBox.style.fontFamily = "'Georgia', serif";
-        leoBox.style.fontStyle = "italic";
-        leoBox.style.textShadow = "0 0 6px rgba(0,255,255,0.3)";
-      }
-
-      // 📝 Bottom Text
-      const bottomText = overlay.querySelector("div:contains('CTRL + ALT')");
-      if (bottomText) {
-        bottomText.style.color = "#66cccc";
-        bottomText.style.textShadow = "0 0 6px rgba(0,255,255,0.3)";
-        bottomText.style.fontFamily = "'Poppins', sans-serif";
-      }
-
-      // 🕹️ Simulator Buttons
-      const simButtons = Array.from(document.querySelectorAll("button")).filter(btn =>
-        ["Flash sim;)", "Simulator 2"].includes(btn.innerText)
-      );
-      simButtons.forEach(btn => {
-        btn.style.background = "linear-gradient(90deg, #004d4d, #006666)";
-        btn.style.color = "#e0ffff";
-        btn.style.boxShadow = "0 0 12px rgba(0,255,255,0.3)";
-        btn.onmouseenter = () => {
-          btn.style.transform = "scale(1.1)";
-          btn.style.boxShadow = "0 0 18px rgba(0,255,255,0.5)";
-        };
-        btn.onmouseleave = () => {
-          btn.style.transform = "scale(1)";
-          btn.style.boxShadow = "0 0 12px rgba(0,255,255,0.3)";
-        };
-      });
-
-      // 💖 Leo Button
-      const leoBtn = document.querySelector("button.leo-romantic");
-      if (leoBtn) {
-        leoBtn.style.background = "linear-gradient(135deg, #004d4d, #006666)";
-        leoBtn.style.color = "#e
+  // ⏳ Wait for DOM and overlay
+  const waitForReady = setInterval(() => {
+    if (document.readyState === "complete" && document.getElementById("simulator-overlay")) {
+      clearInterval(waitForReady);
+      initThemeSwitcher();
+    }
+  }, 200);
+})();
