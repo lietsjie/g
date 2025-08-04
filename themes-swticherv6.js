@@ -102,8 +102,9 @@
     }
   }
 
+  // ⏳ Wait for DOM and overlay
   const waitForReady = setInterval(() => {
-    if (document.readyState === "complete" && document.body) {
+    if (document.readyState === "complete" && document.getElementById("simulator-overlay")) {
       clearInterval(waitForReady);
       initThemeSwitcher();
     }
