@@ -1,4 +1,3 @@
-// THE BEACH THEME
 (function () {
   const currentTheme = localStorage.getItem("theme") || "original";
 
@@ -6,7 +5,7 @@
     const overlay = document.getElementById("simulator-overlay");
     if (!overlay) return;
 
-    // themes button
+    // 🌟 Themes Button
     const themeBtn = document.createElement("div");
     themeBtn.innerText = "Themes";
     themeBtn.style.cssText = `
@@ -28,7 +27,6 @@
       backdrop-filter: blur(4px);
     `;
 
-    // dropdown container
     const dropdown = document.createElement("div");
     dropdown.style.cssText = `
       position: absolute;
@@ -48,28 +46,31 @@
 
     const options = [
       { name: "Original", value: "original" },
-      { name: "The Beach", value: "beach" }
+      { name: "The Beach (2000)", value: "beach" }
     ];
 
     options.forEach(opt => {
       const btn = document.createElement("button");
       btn.innerText = opt.name;
       btn.style.cssText = `
-        background: rgba(255,255,255,0.05);
-        border: 1px solid rgba(255,255,255,0.2);
+        background: linear-gradient(135deg, #004d4d, #001a1a);
+        border: none;
         color: #e0ffff;
         font-size: 15px;
         padding: 8px 14px;
         border-radius: 10px;
         cursor: pointer;
         font-family: 'Poppins', sans-serif;
-        transition: all 0.2s ease;
+        box-shadow: 0 0 10px rgba(0,255,255,0.2);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
       `;
       btn.addEventListener("mouseenter", () => {
-        btn.style.background = "rgba(255,255,255,0.15)";
+        btn.style.transform = "scale(1.05)";
+        btn.style.boxShadow = "0 0 16px rgba(0,255,255,0.4)";
       });
       btn.addEventListener("mouseleave", () => {
-        btn.style.background = "rgba(255,255,255,0.05)";
+        btn.style.transform = "scale(1)";
+        btn.style.boxShadow = "0 0 10px rgba(0,255,255,0.2)";
       });
       btn.addEventListener("click", () => {
         localStorage.setItem("theme", opt.value);
@@ -85,7 +86,7 @@
     document.body.appendChild(themeBtn);
     document.body.appendChild(dropdown);
 
-    // apply beach theme
+    // 🐚 Apply Beach Theme
     if (currentTheme === "beach") {
       overlay.style.background = "linear-gradient(to bottom right, #001a1a, #003333)";
       overlay.style.border = "2px solid #66cccc";
@@ -121,35 +122,28 @@
         rightText.style.fontWeight = "500";
         rightText.style.textShadow = "0 0 6px rgba(0,255,255,0.3)";
       }
-    }
-  }
-// music Button
+
+      // 🎵 Music Button
       const musicButton = document.querySelector("button:contains('🎵 Music')");
       if (musicButton) {
         musicButton.style.background = "linear-gradient(135deg, #004d4d, #006666)";
         musicButton.style.color = "#e0ffff";
         musicButton.style.boxShadow = "0 0 12px rgba(0,255,255,0.3)";
-        musicButton.onmouseenter = () => {
-          musicButton.style.transform = "scale(1.05)";
-          musicButton.style.boxShadow = "0 0 18px rgba(0,255,255,0.5)";
-        };
-        musicButton.onmouseleave = () => {
-          musicButton.style.transform = "scale(1)";
-          musicButton.style.boxShadow = "0 0 12px rgba(0,255,255,0.3)";
-        };
+        musicButton.style.fontWeight = "600";
+        musicButton.style.fontSize = "15px";
       }
 
-      // leo box
-      const leoBox = document.querySelector("div:contains('Leo')");
-      if (leoBox) {
-        leoBox.style.background = "rgba(0, 40, 40, 0.7)";
-        leoBox.style.color = "#e0ffff";
-        leoBox.style.fontFamily = "'Georgia', serif";
-        leoBox.style.fontStyle = "italic";
-        leoBox.style.textShadow = "0 0 6px rgba(0,255,255,0.3)";
+      // 💖 Leo Button
+      const leoBtn = document.querySelector("button.leo-romantic");
+      if (leoBtn) {
+        leoBtn.style.background = "linear-gradient(135deg, #004d4d, #006666)";
+        leoBtn.style.color = "#e0ffff";
+        leoBtn.style.border = "1px solid #66cccc";
+        leoBtn.style.boxShadow = "0 2px 6px rgba(0,255,255,0.3)";
+        leoBtn.style.fontFamily = "'Courier New', monospace";
       }
 
-      // bottom text
+      // 📝 Bottom Text
       const bottomText = overlay.querySelector("div:contains('CTRL + ALT')");
       if (bottomText) {
         bottomText.style.color = "#66cccc";
@@ -157,7 +151,7 @@
         bottomText.style.fontFamily = "'Poppins', sans-serif";
       }
 
-      // simulator buttons
+      // 🕹️ Simulator Buttons
       const simButtons = Array.from(document.querySelectorAll("button")).filter(btn =>
         ["Flash sim;)", "Simulator 2"].includes(btn.innerText)
       );
@@ -165,26 +159,27 @@
         btn.style.background = "linear-gradient(90deg, #004d4d, #006666)";
         btn.style.color = "#e0ffff";
         btn.style.boxShadow = "0 0 12px rgba(0,255,255,0.3)";
-        btn.onmouseenter = () => {
-          btn.style.transform = "scale(1.1)";
-          btn.style.boxShadow = "0 0 18px rgba(0,255,255,0.5)";
-        };
-        btn.onmouseleave = () => {
-          btn.style.transform = "scale(1)";
-          btn.style.boxShadow = "0 0 12px rgba(0,255,255,0.3)";
-        };
+        btn.style.fontSize = "16px";
+        btn.style.borderRadius = "10px";
       });
 
-      // leo quotes button
-      const leoBtn = document.querySelector("button.leo-romantic");
-      if (leoBtn) {
-        leoBtn.style.background = "linear-gradient(135deg, #004d4d, #006666)";
-        leoBtn.style.color = "#e
-  // wait for dom & overlay
+      // 💬 Leo Box
+      const leoBox = Array.from(document.querySelectorAll("div")).find(div =>
+        div.innerText && div.innerText.toLowerCase().includes("leo")
+      );
+      if (leoBox) {
+        leoBox.style.background = "rgba(0, 40, 40, 0.7)";
+        leoBox.style.color = "#e0ffff";
+        leoBox.style.fontFamily = "'Georgia', serif";
+        leoBox.style.fontStyle = "italic";
+        leoBox.style.textShadow = "0 0 6px rgba(0,255,255,0.3)";
+      }
+    }
+  }
+
   const waitForReady = setInterval(() => {
     if (document.readyState === "complete" && document.getElementById("simulator-overlay")) {
       clearInterval(waitForReady);
       initThemeSwitcher();
     }
-  }, 200);
-})();
+  },
