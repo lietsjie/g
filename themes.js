@@ -1,66 +1,118 @@
-(function() {
-    'use strict';
+//THEME 1 (THE BEACH)
+(function () {
+  const currentTheme = localStorage.getItem("theme") || "original";
 
-    // Your code here...
-})();
-// themes.js
+  // apply theme immediately on load
+  if (currentTheme === "beach") applyBeachTheme();
 
-window.ClientThemes = {
-    apply: function (theme) {
-        localStorage.setItem("selectedTheme", theme);
+  // themes button
+  const themeBtn = document.createElement("div");
+  themeBtn.innerText = "Themes";
+  themeBtn.style.cssText = `
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #ffccff, #cc99ff);
+    padding: 12px 20px;
+    border-radius: 20px;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 16px;
+    color: white;
+    cursor: pointer;
+    z-index: 10000;
+    box-shadow: 0 0 12px rgba(255,255,255,0.3);
+    transition: all 0.3s ease;
+  `;
 
-        if (theme === "beach") {
-            this.applyBeach();
-        } else {
-            this.applyOriginal();
-        }
-    },
+  // drowpdown  container
+  const dropdown = document.createElement("div");
+  dropdown.style.cssText = `
+    position: absolute;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(6px);
+    border-radius: 12px;
+    padding: 10px 16px;
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 10001;
+    box-shadow: 0 0 16px rgba(0,0,0,0.3);
+  `;
 
-    applyOriginal: function () {
-        // Your original overlay creation code here
-        console.log("[Theme] Original applied");
-    },
+  const options = [
+    { name: "Original", value: "original" },
+    { name: "The Beach", value: "beach" }
+  ];
 
-    applyBeach: function () {
-        // Your beach overlay creation + floating images here
-        console.log("[Theme] Beach applied");
+  options.forEach(opt => {
+    const btn = document.createElement("button");
+    btn.innerText = opt.name;
+    btn.style.cssText = `
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 14px;
+      padding: 6px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    `;
+    btn.addEventListener("mouseenter", () => {
+      btn.style.background = "rgba(255,255,255,0.2)";
+    });
+    btn.addEventListener("mouseleave", () => {
+      btn.style.background = "transparent";
+    });
+    btn.addEventListener("click", () => {
+      localStorage.setItem("theme", opt.value);
+      location.reload();
+    });
+    dropdown.appendChild(btn);
+  });
 
-        const floats = [
-            { src: "https://i.pinimg.com/736x/ff/7b/08/ff7b08a3d790c6d83e9d867f2fcb8cbf.jpg", text: "leowaow" },
-            { src: "https://i.pinimg.com/1200x/96/2d/7d/962d7da83406856e305eefc660d8e5ec.jpg", text: "themetest" }
-        ];
+  themeBtn.addEventListener("click", () => {
+    dropdown.style.display = dropdown.style.display === "none" ? "flex" : "none";
+  });
 
-        floats.forEach((item, i) => {
-            const img = document.createElement("img");
-            img.src = item.src;
-            img.style.cssText = `
-                position: fixed;
-                top: ${20 + i * 30}%;
-                left: ${15 + i * 35}%;
-                width: 200px;
-                border-radius: 14px;
-                opacity: 0.85;
-                z-index: 9999;
-            `;
-            document.body.appendChild(img);
+  document.body.appendChild(themeBtn);
+  document.body.appendChild(dropdown);
 
-            const phrase = document.createElement("div");
-            phrase.innerText = item.text;
-            phrase.style.cssText = `
-                position: fixed;
-                top: ${20 + i * 30 + 24}%;
-                left: ${15 + i * 35}%;
-                color: #fff;
-                font-size: 20px;
-                font-family: 'Georgia', serif;
-            `;
-            document.body.appendChild(phrase);
-        });
+  // beach theme
+  function applyBeachTheme() {
+    const overlay = document.getElementById("simulator-overlay");
+    if (overlay) {
+      overlay.style.background = "linear-gradient(to bottom right, #004d4d, #001a1a)";
+      overlay.style.border = "2px solid #66cccc";
+      overlay.style.color = "#e0ffff";
+      overlay.style.boxShadow = "0 0 30px rgba(0,255,255,0.3), 0 0 10px rgba(255,255,255,0.1)";
     }
-};
 
-// Auto-apply saved theme on load
-window.addEventListener("load", () => {
-    const theme = localStorage.getItem("selectedTheme") || "original";
-    window.ClientThemes.apply(theme);
-});
+    const themeBtn = document.querySelector("div");
+    if (themeBtn) {
+      themeBtn.style.background = "linear-gradient(135deg, #006666, #003333)";
+      themeBtn.style.color = "#e0ffff";
+      themeBtn.style.boxShadow = "0 0 12px rgba(0,255,255,0.3)";
+    }
+
+    // diff floating image
+    const newImages = [
+      "https://i.pinimg.com/1200x/96/2d/7d/962d7da83406856e305eefc660d8e5ec.jpg",
+      "https://i.pinimg.com/736x/8a/e2/cc/8ae2ccc26509e4c9fb8f38286e1733c3.jpg"
+    ];
+    const floatingImg = document.querySelector("#simulator-overlay img");
+    if (floatingImg) {
+      floatingImg.src = newImages[Math.floor(Math.random() * newImages.length)];
+    }
+
+    // phrases
+    const newPhrases = ["test", "leotwotest"];
+    const rightText = document.querySelector("#simulator-overlay div:nth-child(2)");
+    if (rightText) {
+      rightText.innerText = newPhrases[Math.floor(Math.random() * newPhrases.length)];
+    }
+  }
+})();
