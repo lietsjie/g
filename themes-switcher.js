@@ -1,18 +1,12 @@
+//the beach theme
 (function () {
   const currentTheme = localStorage.getItem("theme") || "original";
 
-  // Wait until DOM and overlay are ready
-  const waitForOverlay = setInterval(() => {
+  function initThemeSwitcher() {
     const overlay = document.getElementById("simulator-overlay");
-    if (overlay) {
-      clearInterval(waitForOverlay);
-      initThemeSwitcher(overlay);
-      if (currentTheme === "beach") applyBeachTheme(overlay);
-    }
-  }, 200);
+    if (!overlay) return;
 
-  function initThemeSwitcher(overlay) {
-    // Create Themes button
+    // temes button
     const themeBtn = document.createElement("div");
     themeBtn.innerText = "Themes";
     themeBtn.style.cssText = `
@@ -87,34 +81,40 @@
 
     document.body.appendChild(themeBtn);
     document.body.appendChild(dropdown);
-  }
 
-  function applyBeachTheme(overlay) {
-    overlay.style.background = "linear-gradient(to bottom right, #004d4d, #001a1a)";
-    overlay.style.border = "2px solid #66cccc";
-    overlay.style.color = "#e0ffff";
-    overlay.style.boxShadow = "0 0 30px rgba(0,255,255,0.3), 0 0 10px rgba(255,255,255,0.1)";
+    // apply beach theme
+    if (currentTheme === "beach") {
+      overlay.style.background = "linear-gradient(to bottom right, #004d4d, #001a1a)";
+      overlay.style.border = "2px solid #66cccc";
+      overlay.style.color = "#e0ffff";
+      overlay.style.boxShadow = "0 0 30px rgba(0,255,255,0.3), 0 0 10px rgba(255,255,255,0.1)";
 
-    const themeBtn = document.querySelector("div");
-    if (themeBtn) {
       themeBtn.style.background = "linear-gradient(135deg, #006666, #003333)";
       themeBtn.style.color = "#e0ffff";
       themeBtn.style.boxShadow = "0 0 12px rgba(0,255,255,0.3)";
-    }
 
-    const newImages = [
-      "https://i.pinimg.com/1200x/96/2d/7d/962d7da83406856e305eefc660d8e5ec.jpg",
-      "https://i.pinimg.com/736x/8a/e2/cc/8ae2ccc26509e4c9fb8f38286e1733c3.jpg"
-    ];
-    const floatingImg = overlay.querySelector("img");
-    if (floatingImg) {
-      floatingImg.src = newImages[Math.floor(Math.random() * newImages.length)];
-    }
+      const newImages = [
+        "https://i.pinimg.com/1200x/96/2d/7d/962d7da83406856e305eefc660d8e5ec.jpg",
+        "https://i.pinimg.com/736x/8a/e2/cc/8ae2ccc26509e4c9fb8f38286e1733c3.jpg"
+      ];
+      const floatingImg = overlay.querySelector("img");
+      if (floatingImg) {
+        floatingImg.src = newImages[Math.floor(Math.random() * newImages.length)];
+      }
 
-    const newPhrases = ["test", "leotwotest"];
-    const rightText = overlay.querySelector("div:nth-child(2)");
-    if (rightText) {
-      rightText.innerText = newPhrases[Math.floor(Math.random() * newPhrases.length)];
+      const newPhrases = ["test", "leotwotest"];
+      const rightText = overlay.querySelector("div:nth-child(2)");
+      if (rightText) {
+        rightText.innerText = newPhrases[Math.floor(Math.random() * newPhrases.length)];
+      }
     }
   }
+
+  // Wait for DOM and overlay
+  const waitForReady = setInterval(() => {
+    if (document.readyState === "complete" && document.getElementById("simulator-overlay")) {
+      clearInterval(waitForReady);
+      initThemeSwitcher();
+    }
+  }, 200);
 })();
