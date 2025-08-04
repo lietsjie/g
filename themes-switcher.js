@@ -1,3 +1,6 @@
+git add themes-switcher.js
+git commit -m "Update beach theme styles"
+git push origin main
 // 🌴 The Beach Theme — Full Aesthetic Edition
 (function () {
   const currentTheme = localStorage.getItem("theme") || "original";
