@@ -1,4 +1,5 @@
 (() => {
+  // Get the theme from localStorage or default to "original"
   const currentTheme = localStorage.getItem("theme") || "original";
 
   function applyBeachTheme(overlay) {
@@ -12,6 +13,7 @@
   }
 
   function injectThemeSwitcher() {
+    // Create theme button
     const btn = document.createElement("div");
     btn.id = "theme-switcher-btn";
     btn.textContent = "Themes";
@@ -25,6 +27,7 @@
       transition:.3s all ease;backdrop-filter:blur(4px);
     `;
 
+    // Create dropdown
     const dropdown = document.createElement("div");
     dropdown.id = "theme-dropdown";
     dropdown.style.cssText = `
@@ -35,32 +38,30 @@
       z-index:2147483647;box-shadow:0 0 24px rgba(0,255,255,.2);
     `;
 
-    [
-      ["Original","original"],
-      ["The Beach (2000)","beach"]
-    ].forEach(([label, value]) => {
-      const option = document.createElement("button");
-      option.textContent = label;
-      option.style.cssText = `
+    // Add theme buttons
+    [["Original", "original"], ["The Beach (2000)", "beach"]].forEach(([label, val]) => {
+      const button = document.createElement("button");
+      button.textContent = label;
+      button.style.cssText = `
         background:linear-gradient(135deg,#004d4d,#001a1a);
         border:none;border-radius:10px;padding:8px 14px;
         font:15px 'Poppins',sans-serif;color:#e0ffff;cursor:pointer;
         transition:.2s transform ease,.2s box-shadow ease;
         box-shadow:0 0 10px rgba(0,255,255,.2);
       `;
-      option.onmouseenter = () => {
-        option.style.transform = "scale(1.05)";
-        option.style.boxShadow = "0 0 16px rgba(0,255,255,.4)";
+      button.onmouseenter = () => {
+        button.style.transform = "scale(1.05)";
+        button.style.boxShadow = "0 0 16px rgba(0,255,255,.4)";
       };
-      option.onmouseleave = () => {
-        option.style.transform = "scale(1)";
-        option.style.boxShadow = "0 0 10px rgba(0,255,255,.2)";
+      button.onmouseleave = () => {
+        button.style.transform = "scale(1)";
+        button.style.boxShadow = "0 0 10px rgba(0,255,255,.2)";
       };
-      option.onclick = () => {
-        localStorage.setItem("theme", value);
-        location.reload();
+      button.onclick = () => {
+        localStorage.setItem("theme", val);
+        location.reload(); // Save theme and reload
       };
-      dropdown.appendChild(option);
+      dropdown.appendChild(button);
     });
 
     btn.onclick = () => {
@@ -70,10 +71,10 @@
     document.body.append(btn, dropdown);
   }
 
-  // Always inject theme switcher, even if "original" is selected
+  // ✅ Always inject switcher first, no matter what
   injectThemeSwitcher();
 
-  // If "beach" theme is active, apply styles
+  // 🌊 Apply Beach theme if active
   if (currentTheme === "beach") {
     const overlay = document.getElementById("simulator-overlay");
     if (overlay) {
