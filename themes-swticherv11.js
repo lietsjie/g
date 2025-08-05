@@ -53,7 +53,10 @@
       `;
       b.onmouseenter=()=>{b.style.transform="scale(1.05)";b.style.boxShadow="0 0 16px rgba(0,255,255,.4)";}
       b.onmouseleave=()=>{b.style.transform="scale(1)";b.style.boxShadow="0 0 10px rgba(0,255,255,.2)";}
-      b.onclick=()=>{localStorage.setItem("theme",val);location.reload();}
+      b.onclick=()=>{
+        localStorage.setItem("theme",val);
+        location.reload();
+      };
       dd.appendChild(b);
     });
 
@@ -63,14 +66,22 @@
   }
 
   /* --------- MAIN FLOW --------- */
-  injectSwitcher();                                // create button immediately
-  const overlay = document.getElementById("simulator-overlay");
-  if (currentTheme === "beach") applyBeachTheme(overlay);
+  injectSwitcher(); // Always inject theme switcher, regardless of theme
 
-  // in case overlay is mounted later
-  const mo = new MutationObserver(muts=>{
-    const ov=document.getElementById("simulator-overlay");
-    if (ov) { applyBeachTheme(ov); mo.disconnect(); }
-  });
-  mo.observe(document.documentElement,{childList:true,subtree:true});
+  // Only apply theme if it's 'beach' and user has selected it
+  if (currentTheme === "beach") {
+    const overlay = document.getElementById("simulator-overlay");
+    if (overlay) {
+      applyBeachTheme(overlay);
+    } else {
+      const mo = new MutationObserver(() => {
+        const ov = document.getElementById("simulator-overlay");
+        if (ov) {
+          applyBeachTheme(ov);
+          mo.disconnect();
+        }
+      });
+      mo.observe(document.documentElement,{childList:true,subtree:true});
+    }
+  }
 })();
