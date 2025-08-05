@@ -2,7 +2,6 @@
   const currentTheme = localStorage.getItem("theme") || "original";
 
   function applyBeachTheme(overlay) {
-    if (!overlay) return;
     overlay.style.cssText += `
       background: linear-gradient(to bottom right,#001a1a,#003333);
       border: 2px solid #66cccc;
@@ -12,8 +11,7 @@
     `;
   }
 
-  function injectSwitcher() {
-    /* ---------- BUTTON ---------- */
+  function injectThemeSwitcher() {
     const btn = document.createElement("div");
     btn.id = "theme-switcher-btn";
     btn.textContent = "Themes";
@@ -27,10 +25,9 @@
       transition:.3s all ease;backdrop-filter:blur(4px);
     `;
 
-    /* ---------- DROPDOWN ---------- */
-    const dd = document.createElement("div");
-    dd.id = "theme-dropdown";
-    dd.style.cssText = `
+    const dropdown = document.createElement("div");
+    dropdown.id = "theme-dropdown";
+    dropdown.style.cssText = `
       position:fixed;top:70px;right:20px;
       display:none;flex-direction:column;gap:12px;
       padding:12px 20px;border-radius:16px;
@@ -40,48 +37,56 @@
 
     [
       ["Original","original"],
-      ["The Beach (2000)","beach"],
-    ].forEach(([label,val])=>{
-      const b=document.createElement("button");
-      b.textContent=label;
-      b.style.cssText=`
+      ["The Beach (2000)","beach"]
+    ].forEach(([label, value]) => {
+      const option = document.createElement("button");
+      option.textContent = label;
+      option.style.cssText = `
         background:linear-gradient(135deg,#004d4d,#001a1a);
         border:none;border-radius:10px;padding:8px 14px;
         font:15px 'Poppins',sans-serif;color:#e0ffff;cursor:pointer;
         transition:.2s transform ease,.2s box-shadow ease;
         box-shadow:0 0 10px rgba(0,255,255,.2);
       `;
-      b.onmouseenter=()=>{b.style.transform="scale(1.05)";b.style.boxShadow="0 0 16px rgba(0,255,255,.4)";}
-      b.onmouseleave=()=>{b.style.transform="scale(1)";b.style.boxShadow="0 0 10px rgba(0,255,255,.2)";}
-      b.onclick=()=>{
-        localStorage.setItem("theme",val);
+      option.onmouseenter = () => {
+        option.style.transform = "scale(1.05)";
+        option.style.boxShadow = "0 0 16px rgba(0,255,255,.4)";
+      };
+      option.onmouseleave = () => {
+        option.style.transform = "scale(1)";
+        option.style.boxShadow = "0 0 10px rgba(0,255,255,.2)";
+      };
+      option.onclick = () => {
+        localStorage.setItem("theme", value);
         location.reload();
       };
-      dd.appendChild(b);
+      dropdown.appendChild(option);
     });
 
-    btn.onclick=()=>{dd.style.display=dd.style.display==="none"?"flex":"none";};
+    btn.onclick = () => {
+      dropdown.style.display = dropdown.style.display === "none" ? "flex" : "none";
+    };
 
-    document.body.append(btn,dd);
+    document.body.append(btn, dropdown);
   }
 
-  /* --------- MAIN FLOW --------- */
-  injectSwitcher(); // Always inject theme switcher, regardless of theme
+  // Always inject theme switcher, even if "original" is selected
+  injectThemeSwitcher();
 
-  // Only apply theme if it's 'beach' and user has selected it
+  // If "beach" theme is active, apply styles
   if (currentTheme === "beach") {
     const overlay = document.getElementById("simulator-overlay");
     if (overlay) {
       applyBeachTheme(overlay);
     } else {
-      const mo = new MutationObserver(() => {
+      const observer = new MutationObserver(() => {
         const ov = document.getElementById("simulator-overlay");
         if (ov) {
           applyBeachTheme(ov);
-          mo.disconnect();
+          observer.disconnect();
         }
       });
-      mo.observe(document.documentElement,{childList:true,subtree:true});
+      observer.observe(document.documentElement, { childList: true, subtree: true });
     }
   }
 })();
